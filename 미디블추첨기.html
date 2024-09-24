@@ -1,0 +1,133 @@
+<html>
+    <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Gaegu&display=swap" rel="stylesheet">
+
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
+
+        <link href="미디블추첨기.css" rel="stylesheet">
+
+        <script src="http://code.jquery.com/jquery-1.11.0.js"></script>
+    </head>
+    <script>
+
+        function start()
+        {
+            if(document.getElementById("textarea").value == "")
+            {
+                alert("추첨할 닉네임을 정상적으로 입력해주세요.");
+
+                document.getElementById("start_button").disabled = "";
+                document.getElementById("start_button").innerText  = "Start";
+
+                return false;
+            }
+
+            if(document.getElementById("input").value == "" || document.getElementById("input").value == 0)
+            {
+                alert("정확한 추첨 시간을 입력해주세요.");
+
+                document.getElementById("start_button").disabled = "";
+                document.getElementById("start_button").innerText  = "Start";
+
+                return false;
+            }
+
+            document.getElementById("start_button").disabled = "disabled";
+			document.getElementById("start_button").innerText  = "ing...";
+
+            let time = Number(document.getElementById("input").value)-1;
+            let time_out = Number(document.getElementById("input").value)*1000;
+
+            $('#header_2').show();
+            $('#header_1').hide();
+
+            let timer = setInterval(() => {
+
+                if(time == 0){
+                    clearInterval(timer)
+
+                    $('#header_1').show();
+                    $('#header_2').hide();
+                }
+
+                document.getElementById("header_text_timer").innerText = time;
+
+                time -= 1;
+
+            }, 1000);
+
+            start_run();
+            setTimeout('stop()',time_out);
+            
+        }
+
+        function stop() 
+        {
+            clearTimeout(T);
+
+            document.getElementById("start_button").disabled = "";
+			document.getElementById("start_button").innerText  = "Start";
+            document.getElementById("header_text_timer").innerText = '　';
+        }
+
+        function start_run()
+		{
+            let str_name = document.getElementById("textarea").value;
+            let arr_name = str_name.split("\n").filter(Boolean);
+
+            let random = Math.floor(Math.random()*arr_name.length);
+
+            let output = arr_name[random];
+
+            $("#output_deco").text(output);
+
+            T=setTimeout('start_run()',20);
+		}
+
+    </script>
+    <body>
+        <div>
+
+            <div class = "background center left" id = 'body_frame'>
+
+                <img class = 'casino_img' src = 'logo.png'>
+
+                <div id = 'header_1'>
+                    <div id = 'header_text' class = 'center'>Medieval Casino</div>
+                    <div id = 'header_text' class = 'center timer'>Event Lottery</div>
+                </div> 
+                <div id = 'header_2' style = 'display: none'>
+                    <div id = 'header_text_timer' class = 'center'>　</div>
+                </div>
+
+
+                <div id = 'output_text' class = 'center'>
+                    <div id = 'output_deco'></div>
+                </div>
+
+                <div id="body_text">
+                    <div style="height:10px;";></div>
+                    신청자 목록 ( 엔터로 구분 )
+                    <div style="height:5px;"></div>
+                    <textarea class = "textarea" id = "textarea" placeholder=""></textarea>
+                </div>
+
+                <div id = 'body_text'>
+                    추첨 시간 <input id='input' type="text" maxlength="2" minlength="1" required /> 초
+                </div>
+                
+
+                <button type="button" class="start_button" id="start_button" onclick="start();">Start</button>
+        </div>
+
+        <div id="margin_t" class="right">
+            <iframe width="850" height="600" src="https://www.youtube.com/embed/8EAUNsF1x48?si=ah57EVFOOM-KeqpS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+
+    </div>
+    </body>
+</html>
